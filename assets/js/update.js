@@ -51,7 +51,70 @@ let updateData = ()=>{
 }
 
 
+let updatePercentages= ()=>{
+    
+    let cambios = [
+        {
+          valor_previo: 250,
+          valor_actual: 301,
+          mensaje_tiempo: 'que la semana anterior'
+        },
+        {
+          valor_previo: 3510,
+          valor_actual: 3200,
+          mensaje_tiempo: 'que la semana anterior'
+        },
+        {
+          valor_previo: 3920,
+          valor_actual: 4215,
+          mensaje_tiempo: 'que ayer'
+        },
+        {
+          valor_previo: 110200,
+          valor_actual: 121520,
+          mensaje_tiempo: 'que ayer'
+        }
+      ];
+        let  porcentajeCambio = (valor_previo,valor_actual)=>{
+            let porcentaje =(valor_actual - valor_previo)*100/valor_previo;
+            return porcentaje.toFixed(2);
+        }
+        let claseCambio = (porcentaje) =>{
+            let clase_cambio = (porcentaje >0)? "text-success": "text-danger";
+            return clase_cambio;
+        }
+        let set_perc = (porcentaje)=>{
+            let perc = (porcentaje>0)?"+"+porcentaje:porcentaje;
+            perc+="%";
+            return perc;
+        }
+        for(let data of cambios){
+            let perc = porcentajeCambio(data.valor_previo,data.valor_actual);
+            data.porcentaje_de_cambio =  set_perc(perc);
+            data.clase_cambio = claseCambio(perc);
+        }
+        
+      
+        let[cambioDinero, cambioActUsr, cambioNewClie, cambioVentas] = cambios;
+        let { clase_cambio: clase_dinero , porcentaje_de_cambio: perc_dinero , mensaje_tiempo:  mens_dinero} = cambioDinero;
+        let { clase_cambio: clase_actusr , porcentaje_de_cambio: perc_actusr , mensaje_tiempo : mens_actusr} = cambioActUsr;
+        let { clase_cambio: clase_newclient , porcentaje_de_cambio: perc_newclient ,  mensaje_tiempo: mens_newclient } = cambioNewClie;
+        let { clase_cambio: clase_sales , porcentaje_de_cambio: perc_sales ,  mensaje_tiempo: mens_sales } = cambioVentas;
+
+        let listofElement2 = document.getElementsByClassName('card-footer p-3');
+        let [firstLegend, secondLegend, thirdLegend, fourthLegend]=listofElement2;
+        let message_cambioDinero = `<p class="mb-0"><span class="text-sm ${clase_dinero} font-weight-bolder"> ${perc_dinero} </span> ${mens_dinero} </p>`;
+        let message_cambioUsr = `<p class="mb-0"><span class="text-sm ${clase_actusr} font-weight-bolder"> ${perc_actusr} </span> ${mens_actusr} </p>`;
+        let message_cambioNewClie = `<p class="mb-0"><span class="text-sm ${clase_newclient} font-weight-bolder"> ${perc_newclient} </span> ${ mens_newclient} </p>`;
+        let message_cambioVentas = `<p class="mb-0"><span class="text-sm ${clase_sales} font-weight-bolder"> ${perc_sales} </span> ${mens_sales} </p>`;
+
+        firstLegend.innerHTML = message_cambioDinero;
+        secondLegend.innerHTML = message_cambioUsr;
+        thirdLegend.innerHTML = message_cambioNewClie;
+        fourthLegend.innerHTML =  message_cambioVentas ;
+}
 
 runScripts();
 modifyText();
 updateData();
+updatePercentages();
